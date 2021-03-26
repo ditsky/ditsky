@@ -24,6 +24,7 @@ task :best_bf => :environment do
     client.messages.create(
     from: from,
     to: to,
-    body: "You are the best girlfriend! -Love, Natalie Maximoff "
+    body: "You are the best girlfriend! -Love, Natalie Maximoff ",
+    media_url: ['app/assets/images/darthBaby.jpg']
     )
 end
