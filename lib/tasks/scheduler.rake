@@ -1,16 +1,18 @@
 def powerful
-    return {body: "You are the best girlfriend! -Love, Natalie Maximoff", 
-            media_url: "https://ditsky.herokuapp.com/scarletWitch.jpg"}
+    return {body: "You could have had a girl like me, but you chose a crusty gamer boy instead.
+                  Quite good at girlfriend, but could use some help with her decision making...", 
+            image: "scarletWitch.jpg"}
 end
 
 def sith
     return {body: "Did you ever hear the tragedy of darth baby the wise? I thought not.
-                   It is not a story boobers would tell you. He was so powerful, he could use the force
-                   to tell the greatest of girlfriends they require worm...", 
-            media_url: ['https://ditsky.herokuapp.com/darthBaby.jpg']}
+                   It is not a story boobers would tell you. He was so powerful, he could use the force to tell the greatest of girlfriends they require worm...", 
+            image: 'darthBaby.jpg'}
 end
 
 def duck
+    return {body: "MOMMMM!!! HELP!! MAN-DAD DO SQUEEZE!! HUNGY DUCK!",
+            image: 'duckSqueeze.jpg'}
 end
 
 task :best_gf => :environment do
@@ -24,7 +26,7 @@ task :best_gf => :environment do
     to = ENV["GF_PHONE"]
 
     #Pick a message option
-    options = [method(:powerful), method(:sith)]
+    options = [method(:powerful), method(:sith), method(:duck)]
     content_method = options.sample
     message = content_method.call
 
@@ -33,7 +35,7 @@ task :best_gf => :environment do
         from: from,
         to: to,
         body: message[:body],
-        media_url: message[:media_url]
+        media_url: [ENV["APP_HOST"] + message[:image]]
     )
 end
 
