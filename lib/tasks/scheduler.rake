@@ -10,6 +10,12 @@ def sith
             image: 'darthBaby.jpg'}
 end
 
+def princess
+    return {body: "Momther... I crave the juicy flesh. Where is the juicy?? Boober want to do eat you filthy pauper. Don't make me do the slap momther. I will not hold back anymore momther; you have teased me long enough. Father says you is besb giwrlfriend. But is best momther??
+        HMMMMMMMM???!! (yes) but feed me dumb hoe. I am perfect baby angel princess. PERFECT ANGEL BOOBER BABY PRINCESS!!!!",
+            image: 'angyBoo.jpg'}
+end
+
 def duck
     return {body: "MOMMMM!!! HELP!! MAN-DAD DO SQUEEZE!! HUNGY DUCK!",
             image: 'duckSqueeze.jpg'}
@@ -26,7 +32,7 @@ task :best_gf => :environment do
     to = ENV["GF_PHONE"]
 
     #Pick a message option
-    options = [method(:powerful), method(:sith), method(:duck)]
+    options = [method(:powerful), method(:sith), method(:duck), method(:princess)]
     content_method = options.sample
     message = content_method.call
 
