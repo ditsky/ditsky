@@ -30,7 +30,7 @@ def robin
     insideJokes = JSON.parse(punchlines)
     images = File.read('lib/tasks/nwimages.json')
     imageUrls = JSON.parse(images)
-    message = setups['exclamations'].sample + "girlfriend, " + insideJokes['punchlines'].sample
+    message = setups['exclamations'].sample + " girlfriend, " + insideJokes['punchlines'].sample
     image = imageUrls['images'].sample
 
     return {body: message, image: image}
