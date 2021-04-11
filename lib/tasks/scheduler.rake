@@ -1,3 +1,5 @@
+require 'json'
+
 def powerful
     return {body: "You could have had a girl like me, but you chose a crusty gamer boy instead.
                   Quite good at girlfriend, but could use some help with her decision making...", 
@@ -21,6 +23,20 @@ def duck
             image: 'duckSqueeze.jpg'}
 end
 
+def robin
+    exclamations = File.read('lib/tasks/exclamations.json')
+    setups = JSON.parse(exclamations)
+    punchlines = File.read('lib/tasks/punchlines.json')
+    insideJokes = JSON.parse(punchlines)
+    images = File.read('lib/tasks/nwimages.json')
+    imageUrls = JSON.parse(images)
+    message = setups['exclamations'].sample + "girlfriend, " + insideJokes['punchlines'].sample
+    image = imageUrls['images'].sample
+
+    return {body: message, image: image}
+
+end
+
 task :best_gf => :environment do
     #Authenticate a Twilio Client
     account_sid = ENV["TWILIO_SID"]
@@ -32,8 +48,30 @@ task :best_gf => :environment do
     to = ENV["GF_PHONE"]
 
     #Pick a message option
-    options = [method(:powerful), method(:sith), method(:duck), method(:princess)]
+    options = [method(:powerful), method(:sith), method(:duck), method(:princess), method(:robin)]
     content_method = options.sample
+    message = content_method.call
+
+    #Send the chosen message
+    client.messages.create(
+        from: from,
+        to: to,
+        body: message[:body],
+        media_url: [ENV["APP_HOST"] + message[:image]]
+    )
+end
+
+task :best_bf, [:test_message] => :environment do |task, args|
+    #Authenticate a Twilio Client
+    account_sid = ENV["TWILIO_SID"]
+    auth_token = ENV["TWILIO_AUTH"]
+    client = Twilio::REST::Client.new(account_sid, auth_token)
+
+    #Set phone numbers
+    from = ENV["TWILIO_PHONE"]
+    to = ENV["GF_PHONE"]
+
+    content_method = method(args[:test_message])
     message = content_method.call
 
     #Send the chosen message
