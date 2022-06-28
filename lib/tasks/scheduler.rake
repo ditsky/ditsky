@@ -37,6 +37,11 @@ def robin
 
 end
 
+def birth
+    return {body: "Happy Birthday sweetie! For this special edition 8pm best girlfriend I present to you a cat in a suit. What a marvel it is to be     around something so handsome and sweet!",
+            image: 'catinsuit.jpg'}
+end
+
 task :best_gf => :environment do
     #Authenticate a Twilio Client
     account_sid = ENV["TWILIO_SID"]
@@ -48,8 +53,13 @@ task :best_gf => :environment do
     to = ENV["GF_PHONE"]
 
     #Pick a message option
-    options = [method(:powerful), method(:sith), method(:duck), method(:princess), method(:robin)]
-    content_method = options.sample
+    d = DateTime.now
+    if d.month.to_s == ENV["GF_BIRTHMONTH"] and d.day.to_s == ENV["GF_BIRTHDAY"]
+        content_method = method(:birth)
+    else
+        options = [method(:powerful), method(:sith), method(:duck), method(:princess), method(:robin)]
+        content_method = options.sample
+    end
     message = content_method.call
 
     #Send the chosen message
